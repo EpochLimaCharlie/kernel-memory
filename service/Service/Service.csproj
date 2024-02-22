@@ -29,7 +29,14 @@
         <PackageReference Include="Microsoft.KernelMemory.MemoryDb.Redis" Version="0.29.240219.2" Condition="'$(SolutionName)' != 'KernelMemoryDev'" />
         <ProjectReference Include="..\..\extensions\Redis\Redis\Redis.csproj" Condition="'$(SolutionName)' == 'KernelMemoryDev'"/>
     </ItemGroup>
-
+    <ItemGroup>
+        <!-- PALS: Custom added  -->
+        <PackageReference Include="AWSSDK.SecretsManager" Version="3.7.201.49" />
+        <PackageReference Include="AWSSDK.SSO" Version="3.7.300.52" />
+        <PackageReference Include="AWSSDK.SSOOIDC" Version="3.7.301.47" />
+        <PackageReference Include="Kralizek.Extensions.Configuration.AWSSecretsManager" Version="1.7.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    </ItemGroup>
     <!--
     This dependency is needed only to generate appsetting.development.json when testing
     the code in GitHub for quick demo, e.g. running
@@ -45,7 +52,7 @@
         }
     -->
     <ItemGroup>
-        <ProjectReference Include="..\..\tools\InteractiveSetup\InteractiveSetup.csproj"/>
+        <ProjectReference Include="..\..\tools\InteractiveSetup\InteractiveSetup.csproj" />
     </ItemGroup>
 
     <!-- Code Analysis -->

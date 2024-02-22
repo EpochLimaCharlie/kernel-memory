@@ -2,6 +2,7 @@
 
 using Microsoft.Extensions.Configuration;
 
+
 namespace Microsoft.KernelMemory.Service;
 
 /// <summary>
@@ -43,6 +44,14 @@ public static partial class KernelMemoryBuilderExtensions
     /// <param name="memoryConfiguration">KM configuration</param>
     /// <param name="servicesConfiguration">Dependencies configuration, e.g. queue, embedding, storage, etc.</param>
     public static IKernelMemoryBuilder FromMemoryConfiguration(
+        this IKernelMemoryBuilder builder,
+        KernelMemoryConfig memoryConfiguration,
+        IConfiguration servicesConfiguration)
+    {
+        return new ServiceConfiguration(servicesConfiguration, memoryConfiguration).PrepareBuilder(builder);
+    }
+
+    public static IKernelMemoryBuilder FromAWSSecretsManager(
         this IKernelMemoryBuilder builder,
         KernelMemoryConfig memoryConfiguration,
         IConfiguration servicesConfiguration)

@@ -3,6 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Threading;
+using System.Threading.Tasks;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +16,12 @@ using Microsoft.KernelMemory.Configuration;
 using Microsoft.KernelMemory.ContentStorage;
 using Microsoft.KernelMemory.Diagnostics;
 using Microsoft.KernelMemory.MemoryStorage;
+using Microsoft.KernelMemory.Service;
+using Microsoft.KernelMemory.WebService;
+using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Configuration.Json;
+using System.IO;
+using System.Text;
 
 // KM Configuration:
 //
@@ -57,6 +67,31 @@ internal sealed class Program
         WebApplicationBuilder appBuilder = WebApplication.CreateBuilder();
         appBuilder.Configuration.AddKMConfigurationSources();
 
+        var chain = new Amazon.Runtime.CredentialManagement.CredentialProfileStoreChain();
+        if (chain.TryGetAWSCredentials("PresalesDevelopment/Admin", out var credentials))
+        {
+            Console.WriteLine("Found PresalesDevelomentProfile..");
+            appBuilder.Configuration.AddSecretsManager(credentials, configurator: options =>
+            {
+                options.SecretFilter = entry => entry.Name.StartsWith("dev/presalespals");
+            });
+        }
+        else
+        {
+            appBuilder.Configuration.AddSecretsManager(region: Amazon.RegionEndpoint.USWest2);
+        }
+        //
+        //appBuilder.Configuration.AddAWSSecretsManager();
+
+        // right now only way to add as json from AWS
+        var json = appBuilder.Configuration["dev/presalespals:KernelMemory"];
+        Console.WriteLine(json);
+        var configBuilder = new ConfigurationBuilder();
+        configBuilder.AddJsonStream(new MemoryStream(Encoding.ASCII.GetBytes(json)));
+        var _config = configBuilder.Build();
+
+        appBuilder.Configuration.AddConfiguration(_config);
+
         // Read KM settings, needed before building the app.
         KernelMemoryConfig config = appBuilder.Configuration.GetSection("KernelMemory").Get<KernelMemoryConfig>()
                                     ?? throw new ConfigurationException("Unable to load configuration");
@@ -79,7 +114,7 @@ internal sealed class Program
         appBuilder.ConfigureSwagger(config);
 
         // Prepare memory instance using configuration settings
-        var memoryBuilder = new KernelMemoryBuilder(appBuilder.Services).FromAppSettings();
+        var memoryBuilder = new KernelMemoryBuilder(appBuilder.Services).FromIConfiguration(appBuilder.Configuration);
 
         // Build the memory client and make it available for dependency injection
         appBuilder.Services.AddSingleton<IKernelMemory>(memoryBuilder.Build());
