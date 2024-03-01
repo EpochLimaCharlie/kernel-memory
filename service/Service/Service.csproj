@@ -12,21 +12,21 @@
     <ItemGroup>
         <!-- Microsoft.KernelMemory.Core includes also extensions without external dependencies, e.g. all Azure extensions -->
 
-        <PackageReference Include="Microsoft.KernelMemory.Core" Version="0.29.240219.2" Condition="'$(SolutionName)' != 'KernelMemoryDev'" />
+        <PackageReference Include="Microsoft.KernelMemory.Core" Version="0.30.240227.1" Condition="'$(SolutionName)' != 'KernelMemoryDev'" />
         <ProjectReference Include="..\Core\Core.csproj" Condition="'$(SolutionName)' == 'KernelMemoryDev'"/>
 
         <!-- These extensions are used by ServiceConfiguration to support third party dependencies -->
 
-        <PackageReference Include="Microsoft.KernelMemory.AI.LlamaSharp" Version="0.29.240219.2" Condition="'$(SolutionName)' != 'KernelMemoryDev'" />
+        <PackageReference Include="Microsoft.KernelMemory.AI.LlamaSharp" Version="0.30.240227.1" Condition="'$(SolutionName)' != 'KernelMemoryDev'" />
         <ProjectReference Include="..\..\extensions\LlamaSharp\LlamaSharp\LlamaSharp.csproj" Condition="'$(SolutionName)' == 'KernelMemoryDev'"/>
 
-        <PackageReference Include="Microsoft.KernelMemory.MemoryDb.Postgres" Version="0.29.240219.2" Condition="'$(SolutionName)' != 'KernelMemoryDev'" />
+        <PackageReference Include="Microsoft.KernelMemory.MemoryDb.Postgres" Version="0.30.240227.1" Condition="'$(SolutionName)' != 'KernelMemoryDev'" />
         <ProjectReference Include="..\..\extensions\Postgres\Postgres\Postgres.csproj" Condition="'$(SolutionName)' == 'KernelMemoryDev'"/>
 
-        <PackageReference Include="Microsoft.KernelMemory.Orchestration.RabbitMQ" Version="0.29.240219.2" Condition="'$(SolutionName)' != 'KernelMemoryDev'" />
+        <PackageReference Include="Microsoft.KernelMemory.Orchestration.RabbitMQ" Version="0.30.240227.1" Condition="'$(SolutionName)' != 'KernelMemoryDev'" />
         <ProjectReference Include="..\..\extensions\RabbitMQ\RabbitMQ.csproj" Condition="'$(SolutionName)' == 'KernelMemoryDev'"/>
 
-        <PackageReference Include="Microsoft.KernelMemory.MemoryDb.Redis" Version="0.29.240219.2" Condition="'$(SolutionName)' != 'KernelMemoryDev'" />
+        <PackageReference Include="Microsoft.KernelMemory.MemoryDb.Redis" Version="0.30.240227.1" Condition="'$(SolutionName)' != 'KernelMemoryDev'" />
         <ProjectReference Include="..\..\extensions\Redis\Redis\Redis.csproj" Condition="'$(SolutionName)' == 'KernelMemoryDev'"/>
     </ItemGroup>
     <ItemGroup>
@@ -37,6 +37,11 @@
         <PackageReference Include="Kralizek.Extensions.Configuration.AWSSecretsManager" Version="1.7.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+    </ItemGroup>
+
     <!--
     This dependency is needed only to generate appsetting.development.json when testing
     the code in GitHub for quick demo, e.g. running
@@ -82,7 +87,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
-    
+
     <ItemGroup>
         <None Remove="setup.sh"/>
         <Content Include="setup.sh">

@@ -49,7 +49,7 @@ using System.Text;
 
 namespace Microsoft.KernelMemory.Service;
 
-internal sealed class Program
+internal static class Program
 {
     public static void Main(string[] args)
     {
@@ -154,6 +154,7 @@ internal sealed class Program
             config.ServiceAuthorization.Enabled,
             config.Service.RunHandlers);
 
+        // Start web service and handler services
         app.Run();
     }
 }
