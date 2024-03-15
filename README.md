@@ -11,7 +11,7 @@ synthetic memory, prompt engineering, and custom semantic memory processing.
 
 KM includes a GPT **[Plugin](https://www.microsoft.com/en-us/microsoft-365/blog/2023/05/23/empowering-every-developer-with-plugins-for-microsoft-365-copilot/)**,
 **web clients**, a .NET library for embedded applications, and as a
-[Docker container](https://hub.docker.com/repository/docker/kernelmemory/service/general).
+[Docker container](https://hub.docker.com/r/kernelmemory/service).
 
 ![image](https://github.com/microsoft/kernel-memory/assets/371009/31894afa-d19e-4e9b-8d0f-cb889bf5c77f)
 
@@ -236,10 +236,16 @@ configuration wizard included:
     cd service/Service
     dotnet run setup
 
-Then run this command to start the Docker image with the configuration just created:
+Then run this command to start the [Docker image](https://hub.docker.com/r/kernelmemory/service)
+with the configuration just created:
 
-    docker run --volume ./appsettings.Development.json:/app/appsettings.Production.json \
-         -it --rm -p 9001:9001 kernelmemory/service
+on Windows:
+
+    docker run --volume .\appsettings.Development.json:/app/appsettings.Production.json -it --rm -p 9001:9001 kernelmemory/service
+
+on macOS/Linux:
+
+    docker run --volume ./appsettings.Development.json:/app/appsettings.Production.json -it --rm -p 9001:9001 kernelmemory/service
 
 ### To import files using Kernel Memory **web service**, use `MemoryWebClient`:
 
@@ -434,6 +440,8 @@ running the service locally with OpenAPI enabled.
 Kernel Memory service offers a **Web API** out of the box, including the **OpenAPI
 swagger** documentation that you can leverage to test the API and create custom
 web clients. For instance, after starting the service locally, see http://127.0.0.1:9001/swagger/index.html.
+
+A .NET Web Client and a Semantic Kernel plugin are available, see the nugets packages above.
 
 A python package with a Web Client and Semantic Kernel plugin will soon be available.
 We also welcome PR contributions to support more languages.
